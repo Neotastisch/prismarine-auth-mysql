@@ -4,7 +4,7 @@ const mysqlpass = require("/home/config.js")
 let connection = mysql.createConnection({
   host: 'localhost',
   user: 'grieferbot',
-  password: mysqlpass.mysqlpass
+  password: mysqlpass.mysqlpass,
   database: 'GGBot'
 })
 connection.connect()
