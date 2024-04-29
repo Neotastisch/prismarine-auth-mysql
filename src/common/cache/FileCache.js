@@ -24,7 +24,6 @@ class FileCache {
             if (err) {
               reject(err);
             } else {
-              console.log("return two");
               resolve(cached);
             }
           });
