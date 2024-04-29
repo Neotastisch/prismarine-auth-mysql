@@ -1,34 +1,57 @@
-const fs = require('fs')
+const mysql = require('mysql')
+const mysqlpass = require("/home/config.js")
+
+let connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'grieferbot',
+  password: mysqlpass.mysqlpass
+  database: 'GGBot'
+})
+connection.connect()
+
 
 class FileCache {
-  constructor (cacheLocation) {
+  constructor(cacheLocation) {
     this.cacheLocation = cacheLocation
   }
 
-  async loadInitialValue () {
-    try {
-      return JSON.parse(fs.readFileSync(this.cacheLocation, 'utf8'))
-    } catch (e) {
-      const cached = {}
-      fs.writeFileSync(this.cacheLocation, JSON.stringify(cached))
-      return cached
-    }
+  async loadInitialValue() {
+    return new Promise((resolve, reject) => {
+      connection.query("SELECT * FROM cache WHERE location = ?", [this.cacheLocation], (err, result) => {
+        if (err || !result[0]) {
+          const cached = {};
+          connection.query("INSERT INTO cache (location, value) VALUES (?, ?)", [this.cacheLocation, JSON.stringify(cached)], (err, result2) => {
+            if (err) {
+              reject(err);
+            } else {
+              console.log("return two");
+              resolve(cached);
+            }
+          });
+        } else {
+          resolve(JSON.parse(result[0].value));
+        }
+      });
+    });
   }
 
-  async getCached () {
+  async getCached() {
     if (this.cache === undefined) {
-      this.cache = await this.loadInitialValue()
+      this.cache = await this.loadInitialValue();
     }
-
-    return this.cache
+    return this.cache;
   }
 
-  async setCached (cached) {
+
+  async setCached(cached) {
     this.cache = cached
-    fs.writeFileSync(this.cacheLocation, JSON.stringify(this.cache))
+    connection.query("UPDATE cache SET value = ? WHERE location = ?", [JSON.stringify(cached), this.cacheLocation], (err, result) => {
+      if (err) throw err;
+    })
+
   }
 
-  async setCachedPartial (cached) {
+  async setCachedPartial(cached) {
     await this.setCached({
       ...this.cache,
       ...cached
