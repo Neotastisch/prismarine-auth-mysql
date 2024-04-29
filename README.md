@@ -1,15 +1,15 @@
-# prismarine-auth
-[![NPM version](https://img.shields.io/npm/v/prismarine-auth.svg)](http://npmjs.com/package/prismarine-auth)
-[![Build Status](https://github.com/PrismarineJS/prismarine-auth/workflows/CI/badge.svg)](https://github.com/PrismarineJS/prismarine-auth/actions?query=workflow%3A%22CI%22)
-[![Official Discord](https://img.shields.io/static/v1.svg?label=PrismarineJS&message=Discord&color=blue&logo=discord)](https://discord.gg/GsEFRM8)
-[![Try it on gitpod](https://img.shields.io/badge/try-on%20gitpod-brightgreen.svg)](https://gitpod.io/#https://github.com/PrismarineJS/prismarine-auth)
+
+# Fork Infos:
+Edit "src/common/cache/FileCache.js" to use your Mysql Credentials
 
 Quickly and easily obtain auth tokens to authenticate with Microsoft/Xbox/Minecraft/Mojang
 
 ## Installation
+Install with
 ```shell
 npm install prismarine-auth
 ```
+and then replace the file "src/common/cache/FileCache.js"
 
 ## Usage
 
